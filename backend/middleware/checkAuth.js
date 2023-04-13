@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import Usuario from '../models/Usuario.js';
 
-const checkOut = async (req, res, next) => {
+const checkAuth = async (req, res, next) => {
   let token;
   if (
     req.headers.authorization &&
@@ -26,4 +26,4 @@ const checkOut = async (req, res, next) => {
   next();
 };
 
-export default checkOut;
+export default checkAuth;
