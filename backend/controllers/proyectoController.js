@@ -32,9 +32,45 @@ const obtenerProyecto = async (req, res) => {
   res.status(200).json(proyecto);
 };
 
-const editarProyecto = async (req, res) => {};
+const editarProyecto = async (req, res) => {
+  const { id } = req.params;
 
-const eliminarProyecto = async (req, res) => {};
+  const proyecto = await Proyecto.findById(id);
+
+  if (!proyecto) {
+    const error = new Error('El proyecto no existe');
+    return res.status(404).json({ Cuidado: error.message });
+  }
+  if (proyecto.creador.toString() !== req.usuario._id.toString()) {
+    const error = new Error('No estás autorizado para ver este proyecto!');
+    return res.status(401).json({ Cuidado: error.message });
+  }
+
+  const proyectoActualizado = await Proyecto.findByIdAndUpdate(id, req.body, {
+    new: true,
+  });
+
+  res.status(200).json(proyectoActualizado);
+};
+
+const eliminarProyecto = async (req, res) => {
+  const { id } = req.params;
+
+  const proyecto = await Proyecto.findById(id);
+
+  if (!proyecto) {
+    const error = new Error('El proyecto no existe');
+    return res.status(404).json({ Cuidado: error.message });
+  }
+  if (proyecto.creador.toString() !== req.usuario._id.toString()) {
+    const error = new Error('No estás autorizado para ver este proyecto!');
+    return res.status(401).json({ Cuidado: error.message });
+  }
+
+  await Proyecto.findByIdAndDelete(id);
+
+  res.status(200).json({ mensaje: 'Proyecto eliminado correctamente' });
+};
 
 const agregarColaborador = async (req, res) => {};
 
