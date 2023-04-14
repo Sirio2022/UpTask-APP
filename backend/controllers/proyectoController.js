@@ -1,4 +1,5 @@
 import Proyecto from '../models/Proyecto.js';
+import Tarea from '../models/Tarea.js';
 
 const obtenerProyectos = async (req, res) => {
   const proyectos = await Proyecto.find({ creador: req.usuario._id });
@@ -29,7 +30,11 @@ const obtenerProyecto = async (req, res) => {
     const error = new Error('No tienes los persmisos para ver este proyecto');
     return res.status(404).json({ Cuidado: error.message });
   }
-  res.status(200).json(proyecto);
+
+  // Obtener las tareas del proyecto
+  const tareas = await Tarea.find().where('proyecto').equals(proyecto._id);
+
+  res.status(200).json({ proyecto, tareas });
 };
 
 const editarProyecto = async (req, res) => {
@@ -76,7 +81,6 @@ const agregarColaborador = async (req, res) => {};
 
 const eliminarColaborador = async (req, res) => {};
 
-const obtenerTareas = async (req, res) => {};
 
 export {
   obtenerProyectos,
@@ -86,5 +90,5 @@ export {
   eliminarProyecto,
   agregarColaborador,
   eliminarColaborador,
-  obtenerTareas,
+  
 };
