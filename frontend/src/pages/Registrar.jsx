@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Alerta from '../components/Alerta';
+import axios from 'axios';
 
 export default function Registrar() {
   const [nombre, setNombre] = useState('');
@@ -9,7 +10,7 @@ export default function Registrar() {
   const [confirmarPassword, setConfirmarPassword] = useState('');
   const [alerta, setAlerta] = useState({});
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if ([nombre, email, password, confirmarPassword].includes('')) {
@@ -25,6 +26,30 @@ export default function Registrar() {
         error: true,
       });
       return;
+    }
+    if (password.length < 6) {
+      setAlerta({
+        msg: 'La contraseña debe tener al menos 6 caracteres',
+        error: true,
+      });
+      return;
+    }
+    setAlerta({});
+
+    // TODO: Crear usuario en la base de datos
+    try {
+      const usuario = {
+        nombre,
+        email,
+        password,
+      };
+      const respuesta = await axios.post(
+        'http://localhost:4000/api/usuarios',
+        usuario
+      );
+      console.log(respuesta);
+    } catch (error) {
+      console.log(error);
     }
   };
 
