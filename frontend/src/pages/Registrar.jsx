@@ -19,6 +19,13 @@ export default function Registrar() {
       });
       return;
     }
+    if (password !== confirmarPassword) {
+      setAlerta({
+        msg: 'Las contraseñas no coinciden',
+        error: true,
+      });
+      return;
+    }
   };
 
   const { msg } = alerta;
