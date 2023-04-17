@@ -50,13 +50,13 @@ export default function Login() {
       <nav className="lg:flex lg:justify-between">
         <Link
           className="block text-center my-5 uppercase text-slate-500"
-          to="registrar"
+          to="/registrar"
         >
           ¿No tienes cuenta? <span className="text-sky-600">Regístrate</span>
         </Link>
         <Link
           className="block text-center my-5 uppercase text-slate-500"
-          to="olvide-password"
+          to="/olvide-password"
         >
           Olvide mi password
         </Link>
