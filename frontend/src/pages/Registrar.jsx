@@ -43,13 +43,19 @@ export default function Registrar() {
         email,
         password,
       };
-      const respuesta = await axios.post(
+      const { data } = await axios.post(
         'http://localhost:4000/api/usuarios',
         usuario
       );
-      console.log(respuesta);
+      setAlerta({
+        msg: data.msg,
+        error: false,
+      });
     } catch (error) {
-      console.log(error);
+      setAlerta({
+        msg: error.response.data.Cuidado,
+        error: true,
+      });
     }
   };
 
