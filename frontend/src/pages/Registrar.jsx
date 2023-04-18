@@ -44,13 +44,17 @@ export default function Registrar() {
         password,
       };
       const { data } = await axios.post(
-        'http://localhost:4000/api/usuarios',
+        `${import.meta.env.VITE_BACKEND_URL}/api/usuarios`,
         usuario
       );
       setAlerta({
         msg: data.msg,
         error: false,
       });
+      setNombre('');
+      setEmail('');
+      setPassword('');
+      setConfirmarPassword('');
     } catch (error) {
       setAlerta({
         msg: error.response.data.Cuidado,
