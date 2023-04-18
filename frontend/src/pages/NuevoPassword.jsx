@@ -44,10 +44,8 @@ export default function NuevoPassword() {
     }
 
     try {
-      const url = `${
-        import.meta.env.VITE_BACKEND_URL
-      }/api/usuarios/olvide-password/${token}`;
-      const { data } = await axios.post(url, { password });
+      const url = `/usuarios/olvide-password/${token}`;
+      const { data } = await clienteAxios.post(url, { password });
       setAlerta({
         msg: data.msg,
         error: false,
