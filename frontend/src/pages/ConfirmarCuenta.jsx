@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
+import clienteAxios from '../config/clienteAxios';
 import Alerta from '../components/Alerta';
 
 export default function ConfirmarCuenta() {
@@ -12,11 +12,8 @@ export default function ConfirmarCuenta() {
   useEffect(() => {
     const confirmarCuenta = async () => {
       try {
-        //TODO: Mover hacia un cliente de axios
-        const url = `${
-          import.meta.env.VITE_BACKEND_URL
-        }/api/usuarios/confirmar/${token}`;
-        const { data } = await axios.get(url);
+        const url = `/usuarios/confirmar/${token}`;
+        const { data } = await clienteAxios.get(url);
 
         setAlerta({
           msg: data.msg,
@@ -44,7 +41,7 @@ export default function ConfirmarCuenta() {
         <span className="text-slate-700">Proyectos</span>
       </h1>
 
-      <div className='mt-20 md:mt-5 shadow-lg px-5 py-10 rounded-xl bg-white'>
+      <div className="mt-20 md:mt-5 shadow-lg px-5 py-10 rounded-xl bg-white">
         {msg && <Alerta alerta={alerta} />}
         {cuentaConfirmada && (
           <Link

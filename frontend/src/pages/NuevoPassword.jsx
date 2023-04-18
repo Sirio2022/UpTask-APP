@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
+import clienteAxios from '../config/clienteAxios';
 import Alerta from '../components/Alerta';
 
 export default function NuevoPassword() {
@@ -16,12 +16,7 @@ export default function NuevoPassword() {
   useEffect(() => {
     const comprobarToken = async () => {
       try {
-        //TODO: Mover hacia un cliente de axios
-        await axios.get(
-          `${
-            import.meta.env.VITE_BACKEND_URL
-          }/api/usuarios/olvide-password/${token}`
-        );
+        await clienteAxios.get(`/usuarios/olvide-password/${token}`);
         setTokenValido(true);
       } catch (error) {
         setAlerta({
