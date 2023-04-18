@@ -9,10 +9,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [alerta, setAlerta] = useState({});
 
-  const { auth, setAuth, cargando } = useAuth();
-
-  console.log(auth);
-  console.log(cargando);
+  const { setAuth } = useAuth();
 
   const navigate = useNavigate();
 
