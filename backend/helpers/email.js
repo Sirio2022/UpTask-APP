@@ -3,6 +3,7 @@ import nodemailer from 'nodemailer';
 export const emailRegistro = async (datos) => {
   const { email, nombre, token } = datos;
 
+  //TODO: Mover hacia un cliente de axios
   const transport = nodemailer.createTransport({
     host: 'sandbox.smtp.mailtrap.io',
     port: 2525,
@@ -22,6 +23,36 @@ export const emailRegistro = async (datos) => {
                 <p>Hola: ${nombre}</p>
                 <p>Para confirmar tu cuenta haz click en el siguiente enlace</p>
                 <a href="${process.env.FRONTEND_URL}/confirmar-cuenta/${token}">Confirmar cuenta</a>
+
+
+            
+            `,
+  });
+};
+
+export const emailOlvidePassword = async (datos) => {
+  const { email, nombre, token } = datos;
+
+  //TODO: Mover a variables de entorno
+  const transport = nodemailer.createTransport({
+    host: 'sandbox.smtp.mailtrap.io',
+    port: 2525,
+    auth: {
+      user: '2400f35586cd3b',
+      pass: '56857d29985e58',
+    },
+  });
+
+  const info = await transport.sendMail({
+    from: '"UpTask - MERN" <cuentas@uptask.com>',
+    to: email,
+    subject: 'UpTask - MERN Reestablece tu password',
+    text: 'Reestablece tu password en UpTask',
+    html: `
+                <h1>Reestablece tu password</h1>
+                <p>Hola: ${nombre}</p>
+                <p>Para reestablecer tu password haz click en el siguiente enlace</p>
+                <a href="${process.env.FRONTEND_URL}/olvide-password/${token}">Reestablecer Password</a>
 
 
             

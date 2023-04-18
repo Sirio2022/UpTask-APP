@@ -38,6 +38,7 @@ export default function Registrar() {
 
     // TODO: Crear usuario en la base de datos
     try {
+      //TODO: Mover hacia un cliente de axios
       const usuario = {
         nombre,
         email,

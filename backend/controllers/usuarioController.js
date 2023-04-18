@@ -1,7 +1,7 @@
 import Usuario from '../models/Usuario.js';
 import generarId from '../helpers/generarId.js';
 import generarJWT from '../helpers/generarJWT.js';
-import { emailRegistro } from '../helpers/email.js';
+import { emailRegistro, emailOlvidePassword } from '../helpers/email.js';
 
 const registrar = async (req, res) => {
   //Evitar que se registren usuarios con el mismo email
@@ -9,7 +9,7 @@ const registrar = async (req, res) => {
   const existeUsuario = await Usuario.findOne({ email });
   if (existeUsuario) {
     const error = new Error('El usuario ya existe con ese Email');
-    return res.status(400).json({ Cuidado: error.message });
+    return res.status(400).json({ msg: error.message });
   }
 
   try {
@@ -73,7 +73,9 @@ const confirmarCuenta = async (req, res) => {
     usuarioConfirmar.confirmado = true;
     usuarioConfirmar.token = '';
     await usuarioConfirmar.save();
-    res.json({ msg: 'Cuenta confirmada' });
+    res.json({
+      msg: 'Cuenta confirmada existosamente, ya puedes iniciar sesión.',
+    });
   } catch (error) {
     console.log(error);
   }
@@ -91,6 +93,11 @@ const olvidePassword = async (req, res) => {
   try {
     usuario.token = generarId();
     await usuario.save();
+    emailOlvidePassword({
+      email: usuario.email,
+      nombre: usuario.nombre,
+      token: usuario.token,
+    }); //Enviar email para restablecer password
     res.json({
       msg: 'Te hemos enviado un email para restablecer tu password',
     });
@@ -105,7 +112,7 @@ const comprobarToken = async (req, res) => {
   const tokenValido = await Usuario.findOne({ token });
 
   if (tokenValido) {
-    res.json({ msg: 'Token válido y el usuario existe' });
+    res.json({ msg: 'Token válido, el usuario existe' });
   } else {
     const error = new Error('Token no válido');
     return res.status(404).json({ msg: error.message });
@@ -120,7 +127,7 @@ const nuevoPassword = async (req, res) => {
 
   if (usuario) {
     usuario.password = password;
-    usuario.token = null;
+    usuario.token = '';
     try {
       await usuario.save();
       res.json({ msg: 'Password actualizado' });
