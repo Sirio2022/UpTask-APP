@@ -8,14 +8,14 @@ const agregarTarea = async (req, res) => {
 
   if (!existeProyecto) {
     const error = new Error('El proyecto no existe');
-    return res.status(404).json({ Cuidado: error.message });
+    return res.status(404).json({ msg: error.message });
   }
 
   if (existeProyecto.creador.toString() !== req.usuario._id.toString()) {
     const error = new Error(
       'No tienes los permisos para realizar esta acción, añadir una tarea'
     );
-    return res.status(404).json({ Cuidado: error.message });
+    return res.status(404).json({ msg: error.message });
   }
 
   try {
@@ -33,14 +33,14 @@ const obtenerTarea = async (req, res) => {
 
   if (!existeTarea) {
     const error = new Error('La tarea no existe');
-    return res.status(404).json({ Cuidado: error.message });
+    return res.status(404).json({ msg: error.message });
   }
 
   if (existeTarea.proyecto.creador.toString() !== req.usuario._id.toString()) {
     const error = new Error(
       'No tienes los permisos para realizar esta acción, obtener una tarea'
     );
-    return res.status(403).json({ Cuidado: error.message });
+    return res.status(403).json({ msg: error.message });
   }
 
   try {
@@ -57,14 +57,14 @@ const editarTarea = async (req, res) => {
 
   if (!existeTarea) {
     const error = new Error('La tarea no existe');
-    return res.status(404).json({ Cuidado: error.message });
+    return res.status(404).json({ msg: error.message });
   }
 
   if (existeTarea.proyecto.creador.toString() !== req.usuario._id.toString()) {
     const error = new Error(
       'No tienes los permisos para realizar esta acción, editar esta tarea'
     );
-    return res.status(403).json({ Cuidado: error.message });
+    return res.status(403).json({ msg: error.message });
   }
 
   const tareaActualizada = await Tarea.findByIdAndUpdate(id, req.body, {
@@ -80,19 +80,19 @@ const eliminarTarea = async (req, res) => {
 
   if (!existeTarea) {
     const error = new Error('La tarea no existe');
-    return res.status(404).json({ Cuidado: error.message });
+    return res.status(404).json({ msg: error.message });
   }
 
   if (existeTarea.proyecto.creador.toString() !== req.usuario._id.toString()) {
     const error = new Error(
       'No tienes los permisos para realizar esta acción, obtener una tarea'
     );
-    return res.status(403).json({ Cuidado: error.message });
+    return res.status(403).json({ msg: error.message });
   }
 
   try {
     await Tarea.findByIdAndDelete(id);
-    res.status(200).json({ Mensaje: 'Tarea eliminada con éxito' });
+    res.status(200).json({ msg: 'Tarea eliminada con éxito' });
   } catch (error) {
     console.log(error);
   }
