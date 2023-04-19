@@ -55,7 +55,7 @@ export default function Registrar() {
       setConfirmarPassword('');
     } catch (error) {
       setAlerta({
-        msg: error.response.data.Cuidado,
+        msg: error.response.data.msg,
         error: true,
       });
     }
