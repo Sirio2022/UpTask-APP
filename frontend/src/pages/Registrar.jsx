@@ -63,7 +63,7 @@ export default function Registrar() {
 
   return (
     <>
-      <h1 className="text-sky-600 font-black text-6xl capitalize">
+      <h1 className="text-6xl font-black capitalize text-sky-600">
         Crea tu cuenta y administra tus{' '}
         <span className="text-slate-700">Proyectos</span>
       </h1>
@@ -71,18 +71,18 @@ export default function Registrar() {
       {msg && <Alerta alerta={alerta} />}
 
       <form
-        className="my-10 bg-white shadow-md rounded-lg p-10"
+        className="my-10 rounded-lg bg-white p-10 shadow-md"
         onSubmit={handleSubmit}
       >
         <div className="my-5">
           <label
-            className="uppercase text-gray-600 block text-xl font-bold"
+            className="block text-xl font-bold uppercase text-gray-600"
             htmlFor="nombre"
           >
             Nombre
           </label>
           <input
-            className="w-full  mt-3 p-3 border rounded-xl bg-gray-50"
+            className="mt-3  w-full rounded-xl border bg-gray-50 p-3"
             type="text"
             name="nombre"
             placeholder="Tu nombre"
@@ -93,13 +93,13 @@ export default function Registrar() {
         </div>
         <div className="my-5">
           <label
-            className="uppercase text-gray-600 block text-xl font-bold"
+            className="block text-xl font-bold uppercase text-gray-600"
             htmlFor="email"
           >
             Email
           </label>
           <input
-            className="w-full  mt-3 p-3 border rounded-xl bg-gray-50"
+            className="mt-3  w-full rounded-xl border bg-gray-50 p-3"
             type="email"
             name="email"
             placeholder="Tu email"
@@ -110,13 +110,13 @@ export default function Registrar() {
         </div>
         <div className="my-5">
           <label
-            className="uppercase text-gray-600 block text-xl font-bold"
+            className="block text-xl font-bold uppercase text-gray-600"
             htmlFor="password"
           >
             Password
           </label>
           <input
-            className="w-full  mt-3 p-3 border rounded-xl bg-gray-50"
+            className="mt-3  w-full rounded-xl border bg-gray-50 p-3"
             type="password"
             name="password"
             placeholder="Tu password"
@@ -127,13 +127,13 @@ export default function Registrar() {
         </div>
         <div className="my-5">
           <label
-            className="uppercase text-gray-600 block text-xl font-bold"
+            className="block text-xl font-bold uppercase text-gray-600"
             htmlFor="confirmar-password"
           >
             Confirmar Password
           </label>
           <input
-            className="w-full  mt-3 p-3 border rounded-xl bg-gray-50"
+            className="mt-3  w-full rounded-xl border bg-gray-50 p-3"
             type="password"
             name="confirmar-password"
             placeholder="Repite tu password"
@@ -144,7 +144,7 @@ export default function Registrar() {
         </div>
 
         <input
-          className="uppercase bg-sky-600 mb-5 text-white font-bold text-xl w-full py-3 rounded-xl hover:bg-sky-700 cursor-pointer transition-colors duration-300"
+          className="mb-5 w-full cursor-pointer rounded-xl bg-sky-600 py-3 text-xl font-bold uppercase text-white transition-colors duration-300 hover:bg-sky-700"
           type="submit"
           value="Crear Cuenta"
         />
@@ -152,14 +152,14 @@ export default function Registrar() {
 
       <nav className="lg:flex lg:justify-between">
         <Link
-          className="block text-center my-5 uppercase text-slate-500"
+          className="my-5 block text-center uppercase text-slate-500"
           to="/"
         >
           ¿Ya posees una cuenta?{' '}
           <span className="text-sky-600">Inicia sesión</span>
         </Link>
         <Link
-          className="block text-center my-5 uppercase text-slate-500"
+          className="my-5 block text-center uppercase text-slate-500"
           to="/olvide-password"
         >
           Olvide mi password
