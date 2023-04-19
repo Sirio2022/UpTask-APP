@@ -36,6 +36,8 @@ export default function Registrar() {
     }
     setAlerta({});
 
+    // Crear el usuario en la API.  Cuando se pasan todas las validaciones.
+
     try {
       const usuario = {
         nombre,
