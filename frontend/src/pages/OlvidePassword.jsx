@@ -9,7 +9,7 @@ export default function OlvidePassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (email === '' || email.length < 6 || !email.includes('@')) {
+    if (email === '' || email.length < 6) {
       setAlerta({
         msg: 'El email es obligatorio',
         error: true,
