@@ -13,7 +13,7 @@ const nuevoProyecto = async (req, res) => {
     const proyectoAlmacenado = await proyecto.save();
     res.status(201).json(proyectoAlmacenado);
   } catch (error) {
-    res.status(400).json({ Cuidado: error.message });
+    res.status(400).json({ msg: error.message });
   }
 };
 
@@ -24,11 +24,11 @@ const obtenerProyecto = async (req, res) => {
 
   if (!proyecto) {
     const error = new Error('El proyecto no existe');
-    return res.status(404).json({ Cuidado: error.message });
+    return res.status(404).json({ msg: error.message });
   }
   if (proyecto.creador.toString() !== req.usuario._id.toString()) {
     const error = new Error('No tienes los persmisos para ver este proyecto');
-    return res.status(404).json({ Cuidado: error.message });
+    return res.status(404).json({ msg: error.message });
   }
 
   // Obtener las tareas del proyecto
@@ -44,11 +44,11 @@ const editarProyecto = async (req, res) => {
 
   if (!proyecto) {
     const error = new Error('El proyecto no existe');
-    return res.status(404).json({ Cuidado: error.message });
+    return res.status(404).json({ msg: error.message });
   }
   if (proyecto.creador.toString() !== req.usuario._id.toString()) {
     const error = new Error('No estás autorizado para ver este proyecto!');
-    return res.status(401).json({ Cuidado: error.message });
+    return res.status(401).json({ msg: error.message });
   }
 
   const proyectoActualizado = await Proyecto.findByIdAndUpdate(id, req.body, {
@@ -65,11 +65,11 @@ const eliminarProyecto = async (req, res) => {
 
   if (!proyecto) {
     const error = new Error('El proyecto no existe');
-    return res.status(404).json({ Cuidado: error.message });
+    return res.status(404).json({ msg: error.message });
   }
   if (proyecto.creador.toString() !== req.usuario._id.toString()) {
     const error = new Error('No estás autorizado para ver este proyecto!');
-    return res.status(401).json({ Cuidado: error.message });
+    return res.status(401).json({ msg: error.message });
   }
 
   await Proyecto.findByIdAndDelete(id);
@@ -81,7 +81,6 @@ const agregarColaborador = async (req, res) => {};
 
 const eliminarColaborador = async (req, res) => {};
 
-
 export {
   obtenerProyectos,
   nuevoProyecto,
@@ -90,5 +89,4 @@ export {
   eliminarProyecto,
   agregarColaborador,
   eliminarColaborador,
-  
 };
