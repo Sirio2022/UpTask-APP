@@ -174,7 +174,7 @@ const ProyectosProvider = ({ children }) => {
       setTimeout(() => {
         setAlerta({});
         navigate('/proyectos');
-      }, 3000);
+      }, 1500);
     } catch (error) {
       console.log(error);
     }
