@@ -49,6 +49,53 @@ const ProyectosProvider = ({ children }) => {
   };
 
   const submitProyecto = async (proyecto) => {
+    if (proyecto.id) {
+      await editarProyecto(proyecto);
+    } else {
+      await nuevoProyecto(proyecto);
+    }
+  };
+
+  const editarProyecto = async (proyecto) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await clienteAxios.put(
+        `/proyectos/${proyecto.id}`,
+        proyecto,
+        config
+      );
+
+      // Actualizar el state
+
+      const proyectosActualizados = proyectos.map((proyecto) =>
+        proyecto._id === data._id ? data : proyecto
+      );
+      setProyectos(proyectosActualizados);
+
+      setAlerta({
+        msg: 'Proyecto editado correctamente',
+        error: false,
+      });
+
+      setTimeout(() => {
+        setAlerta({});
+        navigate('/proyectos');
+      }, 3000);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const nuevoProyecto = async (proyecto) => {
     try {
       const token = localStorage.getItem('token');
       if (!token) return;
@@ -100,6 +147,39 @@ const ProyectosProvider = ({ children }) => {
     }
   };
 
+  const eliminarProyecto = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await clienteAxios.delete(`/proyectos/${id}`, config);
+
+      const proyectosActualizados = proyectos.filter(
+        (proyecto) => proyecto._id !== id
+      );
+      setProyectos(proyectosActualizados);
+
+      setAlerta({
+        msg: data.msg,
+        error: false,
+      });
+
+      setTimeout(() => {
+        setAlerta({});
+        navigate('/proyectos');
+      }, 3000);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <ProyectosContext.Provider
       value={{
@@ -110,6 +190,7 @@ const ProyectosProvider = ({ children }) => {
         obtenerProyecto,
         proyecto,
         cargando,
+        eliminarProyecto,
       }}
     >
       {children}

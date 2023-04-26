@@ -1,14 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import useProyectos from '../hooks/useProyectos';
 import Alerta from './Alerta';
 
 export default function FormularioProyecto() {
+  const [id, setId] = useState(null);
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [fechaEntrega, setFechaEntrega] = useState('');
   const [cliente, setCliente] = useState('');
 
-  const { mostrarAlerta, alerta, submitProyecto } = useProyectos();
+  const params = useParams();
+  const { mostrarAlerta, alerta, submitProyecto, proyecto } = useProyectos();
+
+  useEffect(() => {
+    if (params.id) {
+      setId(proyecto._id);
+      setNombre(proyecto.nombre);
+      setDescripcion(proyecto.descripcion);
+      setFechaEntrega(proyecto.fechaEntrega?.split('T')[0]);
+      setCliente(proyecto.cliente);
+    }
+  }, [params]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,9 +43,11 @@ export default function FormularioProyecto() {
       descripcion,
       fechaEntrega,
       cliente,
+      id
     });
 
     // Reiniciar el form
+    setId(null)
     setNombre('');
     setDescripcion('');
     setFechaEntrega('');
@@ -105,7 +120,7 @@ export default function FormularioProyecto() {
       </div>
       <input
         type="submit"
-        value="Crear Proyecto"
+        value={id ? 'Editar Proyecto' : 'Crear Proyecto'}
         className="w-full cursor-pointer rounded bg-sky-600 p-3 uppercase text-white transition-colors hover:bg-sky-700"
       />
     </form>

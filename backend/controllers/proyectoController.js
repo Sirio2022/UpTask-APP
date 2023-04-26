@@ -71,7 +71,7 @@ const eliminarProyecto = async (req, res) => {
 
   await Proyecto.findByIdAndDelete(id);
 
-  res.status(200).json({ mensaje: 'Proyecto eliminado correctamente' });
+  res.status(200).json({ msg: 'Proyecto eliminado correctamente' });
 };
 
 const agregarColaborador = async (req, res) => {};
