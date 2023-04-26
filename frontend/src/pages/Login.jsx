@@ -5,13 +5,12 @@ import clienteAxios from '../config/clienteAxios';
 import useAuth from '../hooks/useAuth';
 
 export default function Login() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [alerta, setAlerta] = useState({});
 
   const { setAuth } = useAuth();
-
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,6 +31,7 @@ export default function Login() {
       setAlerta({});
       localStorage.setItem('token', data.token);
       setAuth(data);
+      navigate('/proyectos');
     } catch (error) {
       setAlerta({
         msg: error.response.data.msg,
