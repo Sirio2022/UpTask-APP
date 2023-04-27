@@ -3,6 +3,10 @@ import { Dialog, Transition } from '@headlessui/react';
 import useProyectos from '../hooks/useProyectos';
 
 const ModalFormularioTarea = () => {
+  const [nombre, setNombre] = useState('');
+  const [descripcion, setDescripcion] = useState('');
+  const [prioridad, setPrioridad] = useState('');
+
   const { modalFormularioTarea, handleModalTarea } = useProyectos();
   return (
     <Transition.Root show={modalFormularioTarea} as={Fragment}>
