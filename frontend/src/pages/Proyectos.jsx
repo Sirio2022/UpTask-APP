@@ -3,6 +3,7 @@ import PreviewProyecto from '../components/PreviewProyecto';
 
 export default function Proyectos() {
   const { proyectos } = useProyectos();
+  
 
   return (
     <>

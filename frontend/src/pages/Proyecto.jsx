@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import useProyectos from '../hooks/useProyectos';
 import ModalFormularioTarea from '../components/ModalFormularioTarea';
+import Tarea from '../components/Tarea';
 
 export default function Proyecto() {
   const params = useParams();
@@ -67,6 +68,19 @@ export default function Proyecto() {
         </svg>
         Nueva tarea
       </button>
+
+      <p className="mt-10 text-xl font-bold">Tareas del proyecto</p>
+      <div className="mt-10 rounded-lg bg-white shadow">
+        {proyecto?.tareas?.length ? (
+          proyecto.tareas.map((tarea) => (
+            <Tarea key={tarea._id} tarea={tarea} />
+          ))
+        ) : (
+          <p className="my-5 p-10 text-center">
+            No hay tareas para este proyecto
+          </p>
+        )}
+      </div>
       <ModalFormularioTarea />
     </>
   );
