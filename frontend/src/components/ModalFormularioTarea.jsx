@@ -7,6 +7,7 @@ import useProyectos from '../hooks/useProyectos';
 const PRIORIDAD = ['Baja', 'Media', 'Alta'];
 
 const ModalFormularioTarea = () => {
+  const [id, setId] = useState('');
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [fechaEntrega, setFechaEntrega] = useState('');
@@ -20,7 +21,24 @@ const ModalFormularioTarea = () => {
     mostrarAlerta,
     alerta,
     submitTarea,
+    tarea,
   } = useProyectos();
+
+  useEffect(() => {
+    if (tarea?._id) {
+      setId(tarea._id);
+      setNombre(tarea.nombre);
+      setDescripcion(tarea.descripcion);
+      setFechaEntrega(tarea.fechaEntrega?.split('T')[0]);
+      setPrioridad(tarea.prioridad);
+      return;
+    }
+    setId('');
+    setNombre('');
+    setDescripcion('');
+    setFechaEntrega('');
+    setPrioridad('');
+  }, [tarea]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,12 +50,14 @@ const ModalFormularioTarea = () => {
       return;
     }
     await submitTarea({
+      id,
       nombre,
       descripcion,
       fechaEntrega,
       prioridad,
       proyecto: params.id,
     });
+    setId('');
     setNombre('');
     setDescripcion('');
     setFechaEntrega('');
@@ -112,7 +132,7 @@ const ModalFormularioTarea = () => {
                     as="h3"
                     className="text-lg font-bold leading-6 text-gray-900"
                   >
-                    Crear Tarea
+                    {id ? 'Editar Tarea' : 'Crear Tarea'}
                   </Dialog.Title>
 
                   {msg && <Alerta alerta={alerta} />}
@@ -190,7 +210,7 @@ const ModalFormularioTarea = () => {
                     <input
                       type="submit"
                       className="w-full cursor-pointer rounded bg-sky-500 p-3 text-sm font-bold uppercase text-white hover:bg-sky-600"
-                      value="Crear Tarea"
+                      value={id ? 'Guardar Cambios' : 'Crear Tarea'}
                     />
                   </form>
                 </div>
