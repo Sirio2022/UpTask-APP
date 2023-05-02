@@ -44,7 +44,7 @@ export default function Proyecto() {
 
           <Link
             to={`/proyectos/editar/${params.id}`}
-            className="text-sm font-medium uppercase"
+            className="text-sm font-bold uppercase"
           >
             Editar
           </Link>
@@ -91,6 +91,17 @@ export default function Proyecto() {
           </p>
         )}
       </div>
+
+      <div className="mt-10 flex items-center justify-between">
+        <p className="text-xl font-bold">Colaboradores</p>
+        <Link
+          to={`/proyectos/nuevo-colaborador/${proyecto._id}`}
+          className="font-bold uppercase text-gray-400 hover:text-black"
+        >
+          Añadir
+        </Link>
+      </div>
+
       <ModalFormularioTarea />
       <ModalEliminarTarea />
     </>
