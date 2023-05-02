@@ -293,7 +293,7 @@ const ProyectosProvider = ({ children }) => {
       });
       setTimeout(() => {
         setAlerta({});
-      }, 1500);
+      }, 3000);
 
       // Actualizar el state
 
