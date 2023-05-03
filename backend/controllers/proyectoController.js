@@ -1,5 +1,5 @@
 import Proyecto from '../models/Proyecto.js';
-import Tarea from '../models/Tarea.js';
+import Usuario from '../models/Usuario.js';
 
 const obtenerProyectos = async (req, res) => {
   const proyectos = await Proyecto.find({ creador: req.usuario._id }).select(
@@ -76,7 +76,62 @@ const eliminarProyecto = async (req, res) => {
   res.status(200).json({ msg: 'Proyecto eliminado correctamente' });
 };
 
-const agregarColaborador = async (req, res) => {};
+const buscarColaborador = async (req, res) => {
+  const { email } = req.body;
+
+  const usuario = await Usuario.findOne({ email }).select(
+    '-password -__v -createdAt -updatedAt -confirmado -token'
+  );
+
+  if (!usuario) {
+    const error = new Error('El usuario no existe');
+    return res.status(404).json({ msg: error.message });
+  }
+
+  res.status(200).json(usuario);
+};
+
+const agregarColaborador = async (req, res) => {
+  const proyecto = await Proyecto.findById(req.params.id);
+
+  if (!proyecto) {
+    const error = new Error('El proyecto no existe');
+    return res.status(404).json({ msg: error.message });
+  }
+  if (proyecto.creador.toString() !== req.usuario._id.toString()) {
+    const error = new Error('No estás autorizado para ver este proyecto!');
+    return res.status(401).json({ msg: error.message });
+  }
+
+  const { email } = req.body;
+
+  const usuario = await Usuario.findOne({ email }).select(
+    '-password -__v -createdAt -updatedAt -confirmado -token'
+  );
+
+  if (!usuario) {
+    const error = new Error('El usuario no existe');
+    return res.status(404).json({ msg: error.message });
+  }
+
+  // Comprobar que el usuario no esté ya en el proyecto
+  if (proyecto.creador.toString() === usuario._id.toString()) {
+    const error = new Error('El usuario es Admin y no puede ser colaborador');
+    return res.status(400).json({ msg: error.message });
+  }
+
+  // Comprobar que el usuario no esté ya en el proyecto
+  if (proyecto.colaboradores.includes(usuario._id)) {
+    const error = new Error('El usuario ya está en el proyecto');
+    return res.status(400).json({ msg: error.message });
+  }
+
+  // Agregar el usuario al proyecto
+  proyecto.colaboradores.push(usuario._id);
+  await proyecto.save();
+
+  res.status(200).json({ msg: 'Colaborador agregado correctamente' });
+};
 
 const eliminarColaborador = async (req, res) => {};
 
@@ -86,6 +141,7 @@ export {
   obtenerProyecto,
   editarProyecto,
   eliminarProyecto,
+  buscarColaborador,
   agregarColaborador,
   eliminarColaborador,
 };
