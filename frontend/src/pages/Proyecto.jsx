@@ -5,6 +5,7 @@ import ModalFormularioTarea from '../components/ModalFormularioTarea';
 import ModalEliminarTarea from '../components/ModalEliminarTarea';
 import Tarea from '../components/Tarea';
 import Alerta from '../components/Alerta';
+import Colaborador from '../components/Colaborador';
 
 export default function Proyecto() {
   const params = useParams();
@@ -16,6 +17,8 @@ export default function Proyecto() {
   }, []);
 
   const { nombre } = proyecto;
+
+  console.log(proyecto);
 
   if (cargando) return <p>Cargando...</p>;
 
@@ -100,6 +103,18 @@ export default function Proyecto() {
         >
           Añadir
         </Link>
+      </div>
+
+      <div className="mt-10 rounded-lg bg-white shadow">
+        {proyecto?.colaboradores?.length ? (
+          proyecto.colaboradores.map((colaborador) => (
+            <Colaborador key={colaborador._id} colaborador={colaborador} />
+          ))
+        ) : (
+          <p className="my-5 p-10 text-center">
+            No hay colaboradores para este proyecto
+          </p>
+        )}
       </div>
 
       <ModalFormularioTarea />
