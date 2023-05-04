@@ -148,10 +148,14 @@ const ProyectosProvider = ({ children }) => {
       const { data } = await clienteAxios.get(`/proyectos/${id}`, config);
       setProyecto(data);
     } catch (error) {
+      navigate('/proyectos');
       setAlerta({
         msg: error.response.data.msg,
         error: true,
       });
+      setTimeout(() => {
+        setAlerta({});
+      }, 1500);
     } finally {
       setCargando(false);
     }
@@ -449,19 +453,24 @@ const ProyectosProvider = ({ children }) => {
         },
       };
 
-      const { data } = await clienteAxios.post(`/tareas/estado/${id}`, {}, config);
-      
+      const { data } = await clienteAxios.post(
+        `/tareas/estado/${id}`,
+        {},
+        config
+      );
+
       // Actualizar el state
 
       const proyectoActualizado = {
         ...proyecto,
       };
-      proyectoActualizado.tareas = proyectoActualizado.tareas.map((tarea) => tarea._id === data._id ? data : tarea);
+      proyectoActualizado.tareas = proyectoActualizado.tareas.map((tarea) =>
+        tarea._id === data._id ? data : tarea
+      );
 
       setProyecto(proyectoActualizado);
       setTarea({});
       setAlerta({});
-      
     } catch (error) {
       console.log(error.response);
     }

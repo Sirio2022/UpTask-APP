@@ -26,9 +26,7 @@ export default function Proyecto() {
 
   const { msg } = alerta;
 
-  return msg && alerta.error ? (
-    <Alerta alerta={alerta} />
-  ) : (
+  return (
     <>
       <div className="flex justify-between">
         <h1 className="text-4xl font-black">{nombre}</h1>
@@ -87,9 +85,7 @@ export default function Proyecto() {
       <p className="mt-10 text-xl font-bold">Tareas del proyecto</p>
 
       <div className="flex justify-center">
-        <div className="w-full md:w-1/3 lg:w-1/4">
-          {msg && <Alerta alerta={alerta} />}
-        </div>
+       
       </div>
       <div className="mt-10 rounded-lg bg-white shadow">
         {proyecto?.tareas?.length ? (
