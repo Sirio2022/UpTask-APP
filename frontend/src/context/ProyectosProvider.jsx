@@ -39,6 +39,7 @@ const ProyectosProvider = ({ children }) => {
 
         const { data } = await clienteAxios.get('/proyectos', config);
         setProyectos(data);
+        setAlerta({});
       } catch (error) {
         console.log(error);
       }
@@ -429,7 +430,6 @@ const ProyectosProvider = ({ children }) => {
         setAlerta({});
       }, 1500);
     } catch (error) {
-    
       setAlerta({
         msg: error.response.data.msg,
         error: true,

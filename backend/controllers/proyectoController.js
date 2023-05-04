@@ -2,9 +2,12 @@ import Proyecto from '../models/Proyecto.js';
 import Usuario from '../models/Usuario.js';
 
 const obtenerProyectos = async (req, res) => {
-  const proyectos = await Proyecto.find({ creador: req.usuario._id }).select(
-    '-tareas'
-  );
+  const proyectos = await Proyecto.find({
+    $or: [
+      { creador: { $in: req.usuario } },
+      { colaboradores: { $in: req.usuario } },
+    ],
+  }).select('-tareas');
   res.status(200).json(proyectos);
 };
 
@@ -30,7 +33,12 @@ const obtenerProyecto = async (req, res) => {
     const error = new Error('El proyecto no existe');
     return res.status(404).json({ msg: error.message });
   }
-  if (proyecto.creador.toString() !== req.usuario._id.toString()) {
+  if (
+    proyecto.creador.toString() !== req.usuario._id.toString() &&
+    !proyecto.colaboradores.some(
+      (colaborador) => colaborador._id.toString() === req.usuario._id.toString()
+    )
+  ) {
     const error = new Error('No tienes los persmisos para ver este proyecto');
     return res.status(404).json({ msg: error.message });
   }

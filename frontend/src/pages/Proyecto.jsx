@@ -19,13 +19,13 @@ export default function Proyecto() {
 
   const { nombre } = proyecto;
 
-  
-
   if (cargando) return <p>Cargando...</p>;
 
   const { msg } = alerta;
 
-  return (
+  return msg && alerta.error ? (
+    <Alerta alerta={alerta} />
+  ) : (
     <>
       <div className="flex justify-between">
         <h1 className="text-4xl font-black">{nombre}</h1>
