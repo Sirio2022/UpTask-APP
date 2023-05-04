@@ -135,7 +135,25 @@ const agregarColaborador = async (req, res) => {
   res.status(200).json({ msg: 'Colaborador agregado correctamente' });
 };
 
-const eliminarColaborador = async (req, res) => {};
+const eliminarColaborador = async (req, res) => {
+  const proyecto = await Proyecto.findById(req.params.id);
+
+  if (!proyecto) {
+    const error = new Error('El proyecto no existe');
+    return res.status(404).json({ msg: error.message });
+  }
+  if (proyecto.creador.toString() !== req.usuario._id.toString()) {
+    const error = new Error('No estás autorizado para ver este proyecto!');
+    return res.status(401).json({ msg: error.message });
+  }
+
+  // Eliminar el usuario al proyecto
+  proyecto.colaboradores.pull(req.body.id);
+
+  await proyecto.save();
+
+  res.status(200).json({ msg: 'Colaborador eliminado correctamente' });
+};
 
 export {
   obtenerProyectos,

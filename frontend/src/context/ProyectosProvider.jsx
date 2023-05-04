@@ -388,9 +388,54 @@ const ProyectosProvider = ({ children }) => {
     setColaborador(colaborador);
   };
 
-  const eliminarColaborador = async (colaborador) => { 
-    console.log(colaborador);
-  }
+  const eliminarColaborador = async (colaborador) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await clienteAxios.post(
+        `/proyectos/eliminar-colaborador/${proyecto._id}`,
+        { id: colaborador._id },
+        config
+      );
+
+      // Actualizar el state
+
+      const proyectoActualizado = {
+        ...proyecto,
+      };
+      proyectoActualizado.colaboradores =
+        proyectoActualizado.colaboradores.filter(
+          (colaboradorState) => colaboradorState._id !== colaborador._id
+        );
+
+      setProyecto(proyectoActualizado);
+
+      setAlerta({
+        msg: data.msg,
+        error: false,
+      });
+      setColaborador({});
+      setModalEliminarColaborador(false);
+
+      setTimeout(() => {
+        setAlerta({});
+      }, 1500);
+    } catch (error) {
+    
+      setAlerta({
+        msg: error.response.data.msg,
+        error: true,
+      });
+    }
+  };
 
   return (
     <ProyectosContext.Provider
@@ -416,7 +461,7 @@ const ProyectosProvider = ({ children }) => {
         agregarColaborador,
         handleModalEliminarColaborador,
         modalEliminarColaborador,
-        eliminarColaborador
+        eliminarColaborador,
       }}
     >
       {children}
