@@ -3,7 +3,7 @@ import useProyectos from '../hooks/useProyectos';
 import useAdmin from '../hooks/useAdmin';
 
 export default function Tarea({ tarea }) {
-  const { handleModalEditarTarea, handleModalEliminarTarea } = useProyectos();
+  const { handleModalEditarTarea, handleModalEliminarTarea, completarTarea } = useProyectos();
   const { descripcion, nombre, prioridad, fechaEntrega, _id, estado } = tarea;
 
   const admin = useAdmin();
@@ -29,21 +29,14 @@ export default function Tarea({ tarea }) {
             editar
           </button>
         )}
-        {estado ? (
-          <button
+        
+        <button
+            onClick={() => completarTarea(_id)}
             type="button"
-            className="   rounded-lg bg-gray-600 px-5 py-3  text-sm font-bold uppercase text-white hover:bg-gray-800"
+            className={`${estado ? 'bg-sky-600' : 'bg-gray-600'} rounded-lg px-5 py-3 text-sm font-bold uppercase text-white hover:bg-green-800`}
           >
-            Completa
+            {estado ? 'Completada' : 'Incompleta'}
           </button>
-        ) : (
-          <button
-            type="button"
-            className="   rounded-lg bg-sky-600 px-5 py-3  text-sm font-bold uppercase text-white hover:bg-sky-800"
-          >
-            Incompleta
-          </button>
-        )}
         {admin && (
           <button
             onClick={() => handleModalEliminarTarea(tarea)}

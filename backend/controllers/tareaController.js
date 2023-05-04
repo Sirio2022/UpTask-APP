@@ -94,14 +94,44 @@ const eliminarTarea = async (req, res) => {
   }
 
   try {
-    await Tarea.findByIdAndDelete(id);
+    const proyecto = await Proyecto.findById(existeTarea.proyecto);
+    proyecto.tareas.pull(existeTarea._id);
+
+    await Promise.allSettled([
+      await proyecto.save(),
+      await Tarea.findByIdAndDelete(id),
+    ]);
     res.status(200).json({ msg: 'Tarea eliminada con éxito' });
   } catch (error) {
     console.log(error);
   }
 };
 
-const cambiarEstadoTarea = async (req, res) => {};
+const cambiarEstadoTarea = async (req, res) => {
+  const { id } = req.params;
+
+  const existeTarea = await Tarea.findById(id).populate('proyecto');
+
+  if (!existeTarea) {
+    const error = new Error('La tarea no existe');
+    return res.status(404).json({ msg: error.message });
+  }
+
+  if (
+    existeTarea.proyecto.creador.toString() !== req.usuario._id.toString() &&
+    !existeTarea.proyecto.colaboradores.some(
+      (colaborador) => colaborador.toString() === req.usuario._id.toString()
+    )
+  ) {
+    const error = new Error(
+      'No tienes los permisos para realizar esta acción, obtener una tarea'
+    );
+    return res.status(403).json({ msg: error.message });
+  }
+  existeTarea.estado = !existeTarea.estado;
+  await existeTarea.save();
+  res.status(200).json(existeTarea);
+};
 
 export {
   agregarTarea,
