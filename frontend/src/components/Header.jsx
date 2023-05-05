@@ -1,6 +1,11 @@
 import { Link } from 'react-router-dom';
+import useProyectos from '../hooks/useProyectos';
+import Busqueda from './Busqueda';
 
 export default function Header() {
+
+const { handleBuscador } = useProyectos();
+
   return (
     <header className="border-b bg-white px-4 py-5">
       <div className="  md:flex md:justify-between">
@@ -8,7 +13,7 @@ export default function Header() {
           UpTask - MERN
         </h2>
         <div className="flex flex-col md:flex-row items-center gap-4">
-          <button type="button" className="font-bold uppercase">
+          <button type="button" className="font-bold uppercase" onClick={handleBuscador}>
             Buscar Proyecto
           </button>
 
@@ -22,6 +27,8 @@ export default function Header() {
           >
             Cerrar Sesión
           </button>
+
+          <Busqueda />
         </div>
       </div>
     </header>
