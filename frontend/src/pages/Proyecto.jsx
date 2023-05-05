@@ -8,11 +8,21 @@ import ModalEliminarColaborador from '../components/ModalEliminarColaborador';
 import Tarea from '../components/Tarea';
 import Alerta from '../components/Alerta';
 import Colaborador from '../components/Colaborador';
+import io from 'socket.io-client';
+
+let socket;
 
 export default function Proyecto() {
   const params = useParams();
-  const { obtenerProyecto, proyecto, cargando, handleModalTarea, alerta } =
-    useProyectos();
+  const {
+    obtenerProyecto,
+    proyecto,
+    cargando,
+    handleModalTarea,
+    alerta,
+    submitTareasProyecto,
+    eliminarTareaProyecto,
+  } = useProyectos();
 
   const admin = useAdmin();
 
@@ -20,9 +30,25 @@ export default function Proyecto() {
     obtenerProyecto(params.id);
   }, []);
 
-  const { nombre } = proyecto;
+  useEffect(() => {
+    socket = io(import.meta.env.VITE_BACKEND_URL);
+    socket.emit('obtener-proyecto', params.id);
+  }, []);
 
-  console.log(proyecto);
+  useEffect(() => {
+    socket.on('tarea-agregada', (tarea) => {
+      if (tarea.proyecto === proyecto._id) {
+        submitTareasProyecto(tarea);
+      }
+    });
+    socket.on('tarea-eliminada', (tarea) => {
+      if (tarea.proyecto === proyecto._id) {
+        eliminarTareaProyecto(tarea);
+      }
+    });
+  });
+
+  const { nombre } = proyecto;
 
   if (cargando) return <p>Cargando...</p>;
 
@@ -86,9 +112,7 @@ export default function Proyecto() {
 
       <p className="mt-10 text-xl font-bold">Tareas del proyecto</p>
 
-      <div className="flex justify-center">
-       
-      </div>
+      <div className="flex justify-center"></div>
       <div className="mt-10 rounded-lg bg-white shadow">
         {proyecto?.tareas?.length ? (
           proyecto.tareas.map((tarea) => (

@@ -33,6 +33,31 @@ app.use('/api/tareas', tareaRoutes);
 
 const PORT = process.env.PORT || 4000;
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+});
+
+// Soclet.io
+import { Server } from 'socket.io';
+
+const io = new Server(server, {
+  pingTimeout: 60000,
+  cors: {
+    origin: [process.env.FRONTEND_URL],
+  },
+});
+
+io.on('connection', (socket) => {
+  console.log('New client connected');
+
+  // Definir los eventos de socket IO
+  socket.on('obtener-proyecto', (proyecto) => {
+    socket.join(proyecto);
+  });
+  socket.on('nueva-tarea', (tarea) => {
+    socket.to(tarea.proyecto).emit('tarea-agregada', tarea);
+  });
+  socket.on('eliminar-tarea', (tarea) => {
+    socket.to(tarea.proyecto).emit('tarea-eliminada', tarea);
+  });
 });
