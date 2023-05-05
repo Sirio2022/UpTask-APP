@@ -23,6 +23,7 @@ export default function Proyecto() {
     submitTareasProyecto,
     eliminarTareaProyecto,
     actualizarTareaProyecto,
+    cambiarEstadoTarea,
   } = useProyectos();
 
   const admin = useAdmin();
@@ -48,8 +49,13 @@ export default function Proyecto() {
       }
     });
     socket.on('tarea-actualizada', (tareaActualizada) => {
-      if (tareaActualizada.proyecto._id === proyecto._id) {
+      if (tareaActualizada.proyecto === proyecto._id) {
         actualizarTareaProyecto(tareaActualizada);
+      }
+    });
+    socket.on('nuevo-estado', (tareaNuevoStado) => {
+      if (tareaNuevoStado.proyecto._id === proyecto._id) {
+        cambiarEstadoTarea(tareaNuevoStado);
       }
     });
   });

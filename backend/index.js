@@ -61,6 +61,9 @@ io.on('connection', (socket) => {
     socket.to(tarea.proyecto).emit('tarea-eliminada', tarea);
   });
   socket.on('editar-tarea', (tarea) => {
-    socket.to(tarea.proyecto._id).emit('tarea-actualizada', tarea);
+    socket.to(tarea.proyecto).emit('tarea-actualizada', tarea);
+  });
+  socket.on('cambiar-estado', (tarea) => {
+    socket.to(tarea.proyecto._id).emit('nuevo-estado', tarea);
   });
 });

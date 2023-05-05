@@ -257,11 +257,10 @@ const ProyectosProvider = ({ children }) => {
         config
       );
 
-      setAlerta({});
-      setModalFormularioTarea(false);
-
       // Socket io
       socket.emit('editar-tarea', data);
+      setAlerta({});
+      setModalFormularioTarea(false);
     } catch (error) {
       console.log(error);
     }
@@ -446,19 +445,11 @@ const ProyectosProvider = ({ children }) => {
         {},
         config
       );
-
-      // Actualizar el state
-
-      const proyectoActualizado = {
-        ...proyecto,
-      };
-      proyectoActualizado.tareas = proyectoActualizado.tareas.map((tarea) =>
-        tarea._id === data._id ? data : tarea
-      );
-
-      setProyecto(proyectoActualizado);
       setTarea({});
       setAlerta({});
+
+      // Socket io
+      socket.emit('cambiar-estado', data);
     } catch (error) {
       console.log(error.response);
     }
@@ -494,6 +485,20 @@ const ProyectosProvider = ({ children }) => {
   };
 
   const actualizarTareaProyecto = (tarea) => {
+    // Actualizar el state
+
+    const proyectoActualizado = {
+      ...proyecto,
+    };
+
+    proyectoActualizado.tareas = proyectoActualizado.tareas.map((tareaState) =>
+      tareaState._id === tarea._id ? tarea : tareaState
+    );
+
+    setProyecto(proyectoActualizado);
+  };
+
+  const cambiarEstadoTarea = (tarea) => {
     // Actualizar el state
 
     const proyectoActualizado = {
@@ -537,6 +542,7 @@ const ProyectosProvider = ({ children }) => {
         submitTareasProyecto,
         eliminarTareaProyecto,
         actualizarTareaProyecto,
+        cambiarEstadoTarea,
       }}
     >
       {children}
