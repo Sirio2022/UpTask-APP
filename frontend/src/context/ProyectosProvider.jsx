@@ -257,18 +257,11 @@ const ProyectosProvider = ({ children }) => {
         config
       );
 
-      // Actualizar el state
-
-      const proyectoActualizado = {
-        ...proyecto,
-      };
-      proyectoActualizado.tareas = proyecto.tareas.map((tarea) =>
-        tarea._id === data._id ? data : tarea
-      );
-
-      setProyecto(proyectoActualizado);
       setAlerta({});
       setModalFormularioTarea(false);
+
+      // Socket io
+      socket.emit('editar-tarea', data);
     } catch (error) {
       console.log(error);
     }
@@ -305,11 +298,9 @@ const ProyectosProvider = ({ children }) => {
         msg: data.msg,
         error: false,
       });
-      
-      
-      
+
       setModalEliminarTarea(false);
-      
+
       // Socket io
       socket.emit('eliminar-tarea', tarea);
       setTarea({});
@@ -490,16 +481,29 @@ const ProyectosProvider = ({ children }) => {
   };
 
   const eliminarTareaProyecto = (tarea) => {
-       // Actualizar el state
+    // Actualizar el state
 
-       const proyectoActualizado = {
-        ...proyecto,
-      };
-      proyectoActualizado.tareas = proyectoActualizado.tareas.filter(
-        (tareaState) => tareaState._id !== tarea._id
-      );
+    const proyectoActualizado = {
+      ...proyecto,
+    };
+    proyectoActualizado.tareas = proyectoActualizado.tareas.filter(
+      (tareaState) => tareaState._id !== tarea._id
+    );
 
-      setProyecto(proyectoActualizado);
+    setProyecto(proyectoActualizado);
+  };
+
+  const actualizarTareaProyecto = (tarea) => {
+    // Actualizar el state
+
+    const proyectoActualizado = {
+      ...proyecto,
+    };
+    proyectoActualizado.tareas = proyectoActualizado.tareas.map((tareaState) =>
+      tareaState._id === tarea._id ? tarea : tareaState
+    );
+
+    setProyecto(proyectoActualizado);
   };
 
   return (
@@ -532,6 +536,7 @@ const ProyectosProvider = ({ children }) => {
         buscador,
         submitTareasProyecto,
         eliminarTareaProyecto,
+        actualizarTareaProyecto,
       }}
     >
       {children}
