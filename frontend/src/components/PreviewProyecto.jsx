@@ -5,7 +5,7 @@ export default function PreviewProyecto({ proyecto }) {
   const { auth } = useAuth();
   const { nombre, _id, cliente, creador } = proyecto;
   return (
-    <div className="flex border-b p-5 justify-between">
+    <div className="flex flex-col md:flex-row border-b p-5 justify-between">
       <div className="flex items-center gap-2 ">
         <p className="flex-1">
           {nombre}

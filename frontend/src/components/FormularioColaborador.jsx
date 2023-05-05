@@ -23,7 +23,7 @@ export default function FormularioColaborador() {
 
   return (
     <form
-      className="rounded-lg bg-white px-5 py-10 shadow md:w-1/2"
+      className="rounded-lg bg-white px-5 py-10 shadow md:w-1/2 w-full"
       onSubmit={handleSubmit}
     >
       {msg && <Alerta alerta={alerta} />}

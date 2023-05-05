@@ -22,6 +22,8 @@ export default function Proyecto() {
 
   const { nombre } = proyecto;
 
+  console.log(proyecto);
+
   if (cargando) return <p>Cargando...</p>;
 
   const { msg } = alerta;
