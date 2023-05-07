@@ -48,7 +48,7 @@ const io = new Server(server, {
 });
 
 io.on('connection', (socket) => {
-  console.log('New client connected');
+  //console.log('New client connected');
 
   // Definir los eventos de socket IO
   socket.on('obtener-proyecto', (proyecto) => {
