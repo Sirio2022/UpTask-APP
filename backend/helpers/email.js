@@ -22,10 +22,7 @@ export const emailRegistro = async (datos) => {
                 <p>Hola: ${nombre}</p>
                 <p>Para confirmar tu cuenta haz click en el siguiente enlace</p>
                 <a href="${process.env.FRONTEND_URL}/confirmar-cuenta/${token}">Confirmar cuenta</a>
-                <p>Si no has sido tu, ignora este correo</p>
-
-
-            
+                <p>Si no has sido tu, ignora este correo</p>          
             `,
   });
 };
