@@ -15,8 +15,8 @@ export const emailRegistro = async (datos) => {
   const info = await transport.sendMail({
     from: '"UpTask - MERN" <cuentas@uptask.com>',
     to: email,
-    subject: 'Confirma tu cuenta',
-    text: 'Confirma tu cuenta enUpTask',
+    subject: 'upTask - Confirma tu cuenta',
+    text: 'Confirma tu cuenta en UpTask',
     html: `
                 <h1>Confirma tu cuenta</h1>
                 <p>Hola: ${nombre}</p>
