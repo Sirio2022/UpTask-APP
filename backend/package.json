@@ -5,6 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
+    "build": "shx mkdir -p dist && shx cp index.js dist/index.js",
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
@@ -24,6 +25,7 @@
     "socket.io": "^4.6.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.0",
+    "shx": "^0.3.4"
   }
 }
